@@ -1001,7 +1001,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myrigibody: {fileID: 1781479448}
-  velocity: {x: 30, y: 0}
+  friction: {x: -0.1, y: 0}
   speed: 10
   forceJump: 14
 --- !u!1660057539 &9223372036854775807
