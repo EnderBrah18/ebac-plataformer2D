@@ -15,8 +15,6 @@ public class ItemManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-
-
     }
 
     private void Start()
