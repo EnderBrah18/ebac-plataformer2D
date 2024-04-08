@@ -6,6 +6,7 @@ using DG.Tweening;
 public class Player : MonoBehaviour
 {
     public Rigidbody2D myrigibody;
+    public HealthBase healthBase;
     
     [Header("Speed setup")]
     public Vector2 friction = new Vector2(.1f, 0);
@@ -23,11 +24,28 @@ public class Player : MonoBehaviour
 
     [Header("Animation player")]
     public string boolRun = "Run";
+    public string triggerDeath = "Death";
     public Animator animator;
     public float playerSwipeDuration = .1f;
 
 
     private float _currentSpeed;
+    public bool isJumping;
+
+
+    private void Awake()
+    {
+        if (healthBase != null)
+        {
+            healthBase.OnKill += OnPlayerDeath;
+        }
+    }
+    private void OnPlayerDeath()
+    {
+        healthBase.OnKill -= OnPlayerDeath;
+
+        animator.SetTrigger(triggerDeath);
+    }
 
     public void Update()
     {
@@ -91,14 +109,23 @@ public class Player : MonoBehaviour
 
     private void HandleJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
         {
             myrigibody.velocity = Vector2.up * forceJump;
+            isJumping = true;
             
 
-            DOTween.Kill(myrigibody.transform);
-
             HandleScaleJump();
+
+            DOTween.Kill(myrigibody.transform);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            isJumping = false;
         }
     }
 
@@ -111,12 +138,14 @@ public class Player : MonoBehaviour
         {
             myrigibody.transform.DOScaleX(.7f, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
         }
-        else if (myrigibody.transform.localScale.x != 1)
-        {
-            myrigibody.transform.DOScaleX(-.7f, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
-        }
+        else myrigibody.transform.DOScaleX(-.7f, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
+       
 
 
+    }
 
+    public void DestroyMe()
+    {
+        Destroy(gameObject);
     }
 }
