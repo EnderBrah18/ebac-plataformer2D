@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48d057ac058e814abaad173562d13a0, type: 3}
   m_Name: SOString_Player02_name
   m_EditorClassIdentifier: 
-  value: Paulo
+  value: Pedro
