@@ -5242,18 +5242,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myrigibody: {fileID: 1781479448}
   healthBase: {fileID: 1781479453}
-  friction: {x: -0.5, y: 0}
-  speed: 21
-  speedRun: 20
-  forceJump: 17
-  ease: 27
-  soJumpScaleY: {fileID: 11400000, guid: 4289ab03cb22ab946b6ab8c71440c90d, type: 2}
-  soJumpScaleX: {fileID: 11400000, guid: a6fa1c628e6c8424d821655e488713b6, type: 2}
-  soAnimationDuration: {fileID: 11400000, guid: 3564cf2f606e071488fff3e15fabe0ce, type: 2}
-  boolRun: Run
-  triggerDeath: Death
+  soPlayerSetup: {fileID: 11400000, guid: bbb837fee4122b64eab19b8dbf407239, type: 2}
   animator: {fileID: 1036264971}
-  playerSwipeDuration: 0.1
   isJumping: 0
 --- !u!114 &1781479453
 MonoBehaviour:
