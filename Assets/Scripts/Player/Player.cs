@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
         }
 
         _currentPlayer = Instantiate(soPlayerSetup.player, transform);
+        var gunBase = _currentPlayer.GetComponentInChildren<GunBase>();
+        gunBase.playerSideReference = transform;
     }
     private void OnPlayerDeath()
     {
