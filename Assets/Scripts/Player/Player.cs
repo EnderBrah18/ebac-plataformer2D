@@ -14,9 +14,14 @@ public class Player : MonoBehaviour
 
 
     private float _currentSpeed;
-    public bool isJumping;
 
     private Animator _currentPlayer;
+
+    [Header("Jump Collision Check")]
+    public Collider2D collide2D;
+    public float distToGround;
+    public float spaceToGround = .1f;
+    public ParticleSystem jumpVFX;
 
 
     private void Awake()
@@ -29,7 +34,21 @@ public class Player : MonoBehaviour
         _currentPlayer = Instantiate(soPlayerSetup.player, transform);
         var gunBase = _currentPlayer.GetComponentInChildren<GunBase>();
         gunBase.playerSideReference = transform;
+
+        if (collide2D != null)
+        {
+            distToGround = collide2D.bounds.extents.y;
+        }
     }
+
+    private bool IsGrounded()
+    {
+        
+        return Physics2D.Raycast(transform.position, -Vector2.up, distToGround + spaceToGround);
+    }
+    
+
+
     private void OnPlayerDeath()
     {
         healthBase.OnKill -= OnPlayerDeath;
@@ -39,6 +58,7 @@ public class Player : MonoBehaviour
 
     public void Update()
     {
+        IsGrounded();
         HandleJump();
         HandleMovement();
 
@@ -99,24 +119,22 @@ public class Player : MonoBehaviour
 
     private void HandleJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             myrigibody.velocity = Vector2.up * soPlayerSetup.forceJump;
-            isJumping = true;
             
 
             HandleScaleJump();
+            PlayJumpVFX();
 
             DOTween.Kill(myrigibody.transform);
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void PlayJumpVFX()
     {
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            isJumping = false;
-        }
+        VFXManager.Instance.PlayVFXByType(VFXManager.VFXType.JUMP, transform.position);
+        //if(jumpVFX != null) jumpVFX.Play();
     }
 
     private void HandleScaleJump()
