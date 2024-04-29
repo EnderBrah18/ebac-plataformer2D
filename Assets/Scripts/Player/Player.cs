@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     public float spaceToGround = .1f;
     public ParticleSystem jumpVFX;
 
+    public AudioSource audioSource;
+
 
     private void Awake()
     {
@@ -128,7 +130,11 @@ public class Player : MonoBehaviour
             PlayJumpVFX();
 
             DOTween.Kill(myrigibody.transform);
+
+            if (audioSource != null) audioSource.Play();
         }
+
+        
     }
 
     private void PlayJumpVFX()
